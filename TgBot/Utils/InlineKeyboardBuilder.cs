@@ -10,25 +10,30 @@ public static class InlineKeyboardBuilder
     public static InlineKeyboardMarkup BuildInlineKeyboard(StreamManifest manifest, string url)
     {
         var keyboard = new List<InlineKeyboardButton[]>();
-        var i = 0;
-        foreach (var stream in manifest.GetAudioOnlyStreams().Where(s => s.Size.MegaBytes < 50))
+        var videoStreams = manifest.GetVideoOnlyStreams()
+            .Where(s => s.Size.MegaBytes < 50)
+            .ToList();
+        
+        for (int i = 0; i < videoStreams.Count; i+=2)
         {
-            var callbackData = $"audio_{i}";
-            StreamInfoDict[callbackData] = (stream, url);
-            keyboard.Add([
-                InlineKeyboardButton.WithCallbackData($"Audio ({stream.Container.Name}) {stream.Size.MegaBytes:N2} MB", callbackData)
-            ]);
-            i++;
+            var buttons = new List<InlineKeyboardButton>(2);
+            
+            var firstCallbackData = $"video_{i}";
+            var firstStream = videoStreams[i];
+            StreamInfoDict[firstCallbackData] = (firstStream, url);
+            buttons.Add(InlineKeyboardButton.WithCallbackData($"Video ({firstStream.VideoQuality}) {firstStream.Size.MegaBytes:N2} MB", firstCallbackData));
+            
+            if (i + 1 < videoStreams.Count)
+            {
+                var secondStream = videoStreams[i+1];
+                var secondCallbackData = $"video_{i + 1}";
+                StreamInfoDict[secondCallbackData] = (secondStream, url);
+                buttons.Add(InlineKeyboardButton.WithCallbackData($"Video ({secondStream.VideoQuality}) {secondStream.Size.MegaBytes:N2} MB", secondCallbackData));
+            }
+            
+            keyboard.Add(buttons.ToArray());
         }
-        foreach (var stream in manifest.GetVideoOnlyStreams().Where(s => s.Size.MegaBytes < 50))
-        {
-            var callbackData = $"video_{i}";
-            StreamInfoDict[callbackData] = (stream, url);
-            keyboard.Add([
-                InlineKeyboardButton.WithCallbackData($"Video ({stream.VideoQuality}) {stream.Size.MegaBytes:N2} MB", callbackData)
-            ]);
-            i++;
-        }
+        
         return new InlineKeyboardMarkup(keyboard);
     }
 }

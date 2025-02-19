@@ -7,7 +7,7 @@ namespace OneMistakeLoaderBot.Handlers;
 
 public static class MessageHandler
 {
-    private const string StartMessage = "Hello,\nSend YouTube video links for download (max 30 mins).";
+    private const string StartMessage = "Hello,\nSend YouTube video links for download (max 50 MB, cause telegram limitations).";
 
     public static async Task HandleMessageAsync(ITelegramBotClient botClient, Message message, CancellationToken cancellationToken)
     {

@@ -10,7 +10,11 @@ public static class CallbackQueryHandler
 {
     public static async Task HandleCallbackQueryAsync(ITelegramBotClient botClient, CallbackQuery callbackQuery, CancellationToken cancellationToken)
     {
-        if (callbackQuery?.Message == null) return;
+        if (callbackQuery?.Message == null)
+        {
+            return;
+        }
+        
         var chatId = callbackQuery.Message.Chat.Id;
         var callbackData = callbackQuery.Data;
         if (InlineKeyboardBuilder.StreamInfoDict.TryGetValue(callbackData, out var info))

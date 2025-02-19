@@ -40,7 +40,7 @@ public class DownloadManager
                 await using var stream = File.OpenRead(path);
                 await request.BotClient.SendVideo(request.ChatId,
                     InputFile.FromStream(stream),
-                    caption: $"<strong>{video.Title}</strong>",
+                    caption: $"{video.Title}",
                     cancellationToken: request.CancellationToken);
                 stream.Close();
                 File.Delete(path);
