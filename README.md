@@ -1,7 +1,6 @@
 # Telegram Video Bot (.NET 8.0)
 
-A Telegram bot written in .NET 8.0 that can upload videos up to 50 MB.
-The bot is not working due to new youtube rules. **Only users with premium subscription can download videos.**
+A Telegram bot written in .NET 8.0 that can upload videos up to 50 MB (due telegram restrictions)
 ## Features
 - Handles video uploads (up to 50 MB)
 - Basic command handling in a Telegram chat
